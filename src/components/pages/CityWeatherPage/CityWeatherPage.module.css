@@ -97,14 +97,14 @@ a {
     z-index: 2;
     gap: 20px;
 }
-.search a {
+.search button {
     background-color: transparent;
     outline: none;
     border: none;
     cursor: pointer;
     transition: all .3s ease;
 }
-.search a:hover {
+.search button:hover {
     transform: scale(1.2);
 }
 .search input {
@@ -120,4 +120,15 @@ a {
 .search input::placeholder {
     color: #251683;
     font-size: 14px;
+}
+.blurAura {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    z-index: 10;
+    backdrop-filter: blur(24px);
+    transition: all .7s ease;
+}
+.nonBlur {
+    backdrop-filter: blur(0);
 }

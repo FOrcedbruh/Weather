@@ -1,4 +1,4 @@
-import styles from './HomePage.module.css';
+import styles from './CityWeatherPage.module.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import DataType from '../../../types/DataType';
@@ -7,33 +7,31 @@ import nightImage from './../../../images/backgrounds/night.jpg';
 import dayImage from './../../../images/backgrounds/day.jpg';
 import morningImage from './../../../images/backgrounds/morning.jpg';
 import cloudyImage from './../../../images/backgrounds//cloudy.jpg';
-import { Link } from 'react-router-dom';
-import glass from './../../../images/icons/magnifying-glass-backup-svgrepo-com.svg';
+import { Link, useParams } from 'react-router-dom';
 
 
 
 
+const CityWeatherPage: React.FC = () => {
 
-const HomePage: React.FC = () => {
+
+    const { city } = useParams();
 
 
-    const [searchValue, setsSearchValue] = useState<string>('Odintsovo');
-
-    const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setsSearchValue(e.target.value);
-        console.log(searchValue);
-    }
-
+    const [blur, setBlur] = useState<boolean>(true);
+    const [blurAura, setBlurAura] = useState<boolean>(true);
 
     useEffect(() => {
         axios.get(src) .then(data => {
             setWeather(data.data);
                 console.log(data.data);
         })
+        setTimeout(() => setBlur(false), 1000);
+        setTimeout(() => setBlurAura(false), 1100);
     }, []);
 
 
-    const src: string = `https://api.weatherapi.com/v1/forecast.json?key=07991a809bd848d8ae0183959240101&q=${searchValue}&days=7&aqi=no&alerts=no`;
+    const src: string = `https://api.weatherapi.com/v1/forecast.json?key=07991a809bd848d8ae0183959240101&q=${city}&days=7&aqi=no&alerts=no`;
 
 
     const [weather, setWeather] = useState<DataType>();
@@ -54,10 +52,7 @@ const HomePage: React.FC = () => {
             setNight(false);
             setMorning(false);
         }
-        if (currentTime < 6 && currentTime > 0) {
-            setNight(true);
-        }
-        if (currentTime >= 20) {
+        if (currentTime >= 20 ) {
             setNight(true);
             setDay(false);
             setMorning(false);
@@ -67,7 +62,7 @@ const HomePage: React.FC = () => {
             setMorning(true);
             setDay(false);
         }
-        if (currentTime >= 12 && currentTime < 20) {
+        if (currentTime >= 12 && currentTime <= 19) {
             setDay(true);
             setNight(false);
             setMorning(false);
@@ -100,17 +95,18 @@ const HomePage: React.FC = () => {
         }
     }
 
+    const temp_c = Number(weather?.current.temp_c);
+
+
+
     return (
         <main className={styles.window}>
-            <div className={styles.search}>
-                <input type="text"  placeholder='Search cities...' value={searchValue} onChange={e => onChangeSearch(e)}/>
-                <Link to={`/cityWeather/${searchValue}`}><img src={glass}/></Link>
-            </div>
+            {blurAura && <div className={`${styles.blurAura} ${!blur ? styles.nonBlur : ''}`}></div>}
             {night && <img src={Styles.night?.background} className={styles.background}/>}
             {day && <img src={Styles.day?.background} className={styles.background}/>}
             {morning && <img src={Styles.morning?.background} className={styles.background}/>}
             {cloudy && <img src={Styles.cloudy?.background} className={styles.background}/>}
-            <h1>{weather?.current.temp_c}°</h1>
+            <h1>{temp_c > 0 ? `+${weather?.current.temp_c}` : weather?.current.temp_c}°</h1>
             <h2>{weather?.location.name}</h2>
             <section className={styles.info}>
                 <div className={styles.hourly}>
@@ -141,4 +137,4 @@ const HomePage: React.FC = () => {
 
 
 
-export default HomePage;
+export default CityWeatherPage;

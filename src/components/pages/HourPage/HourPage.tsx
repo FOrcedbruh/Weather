@@ -3,21 +3,26 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import DataType from "../../../types/DataType";
 import styles from './HourPage.module.css';
-import termometr from './../../../images/icons/thermometer-outline.svg';
 import wind from './../../../images/icons/wind-svgrepo-com.svg';
 import humidity from './../../../images/icons/humidity-svgrepo-com.svg';
-import water from './../../../images/icons/water-svgrepo-com.svg';
+import water from './../../../images/icons/water-drop-svgrepo-com.svg';
+import sun from './../../../images/icons/sun-svgrepo-com.svg';
+import term from './../../../images/icons/health-medical-medicine-termometer-svgrepo-com.svg';
+import press from './../../../images/icons/pressure-svgrepo-com.svg';
+
+
+
 
 const HourPage: React.FC = () => {
 
-    const { id } = useParams();
+    const { id, city } = useParams();
 
     const numberID = Number(id);
 
 
     const [res, setRes] = useState<DataType>()
     
-    const src: string = 'https://api.weatherapi.com/v1/forecast.json?key=07991a809bd848d8ae0183959240101&q=Moscow&days=7&aqi=no&alerts=no';
+    const src: string = `https://api.weatherapi.com/v1/forecast.json?key=07991a809bd848d8ae0183959240101&q=${city}&days=7&aqi=no&alerts=no`;
 
 
     useEffect(() => {
@@ -26,7 +31,10 @@ const HourPage: React.FC = () => {
         })
     }, []);
 
+
     const currentHour = res?.forecast.forecastday[0].hour[numberID];
+
+
 
     console.log(currentHour);
 
@@ -39,7 +47,7 @@ const HourPage: React.FC = () => {
                 </div>
                 <div className={styles.info}>
                     <article className={styles.infoItem}>
-                        <h4>UV INDEX</h4>
+                        <h4><img src={sun}/> UV INDEX</h4>
                         <h2>{currentHour?.uv}</h2>
                     </article>
                     <article className={styles.infoItem}>
@@ -47,7 +55,7 @@ const HourPage: React.FC = () => {
                         <h2>{currentHour?.wind_kph} km/h</h2>
                     </article>
                     <article className={styles.infoItem}>
-                        <h4> <img className={styles.termIcon} src={termometr}/>FEELS LIKE</h4>
+                        <h4> <img className={styles.termIcon} src={term}/> FEELS LIKE</h4>
                         <h2>{currentHour?.feelslike_c}°</h2>
                     </article>
                     <article className={styles.infoItem}>
@@ -59,7 +67,8 @@ const HourPage: React.FC = () => {
                         <h2>{currentHour?.humidity}%</h2>
                     </article>
                     <article className={styles.infoItem}>
-                        
+                        <h4><img src={press}/> PRESSURE</h4>
+                        <h2>{currentHour?.pressure_mb} mb</h2>
                     </article>
                 </div>
             </section>

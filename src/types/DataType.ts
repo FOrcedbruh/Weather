@@ -27,7 +27,8 @@ interface HourType {
     uv: number,
     wind_kph: number,
     feelslike_c: number,
-    precip_mm: number
+    precip_mm: number,
+    pressure_mb?: number,
 }
 
 
