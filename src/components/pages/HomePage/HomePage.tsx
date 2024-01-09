@@ -17,7 +17,7 @@ import glass from './../../../images/icons/magnifying-glass-backup-svgrepo-com.s
 const HomePage: React.FC = () => {
 
 
-    const [searchValue, setsSearchValue] = useState<string>('Odintsovo');
+    const [searchValue, setsSearchValue] = useState<string>(localStorage.getItem('city') || 'Moscow');
 
     const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setsSearchValue(e.target.value);
@@ -48,7 +48,7 @@ const HomePage: React.FC = () => {
     const currentTime: number = Number(weather?.current.last_updated.slice(11, 13));
 
     useEffect(() => {
-        if (weather?.current.condition.text === ('Partly cloudy' || 'Cloudy' || 'Mostly cloudy')) {
+        if (weather?.current.condition.text === ('Cloudy' || 'Mostly cloudy')) {
             setCloudy(true);
             setDay(false);
             setNight(false);

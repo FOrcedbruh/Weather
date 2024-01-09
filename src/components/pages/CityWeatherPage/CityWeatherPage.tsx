@@ -27,7 +27,7 @@ const CityWeatherPage: React.FC = () => {
                 console.log(data.data);
         })
         setTimeout(() => setBlur(false), 1000);
-        setTimeout(() => setBlurAura(false), 1100);
+        setTimeout(() => setBlurAura(false), 1300);
     }, []);
 
 
@@ -46,7 +46,7 @@ const CityWeatherPage: React.FC = () => {
     const currentTime: number = Number(weather?.current.last_updated.slice(11, 13));
 
     useEffect(() => {
-        if (weather?.current.condition.text === ('Partly cloudy' || 'Cloudy' || 'Mostly cloudy')) {
+        if (weather?.current.condition.text === ('Cloudy' || 'Mostly cloudy')) {
             setCloudy(true);
             setDay(false);
             setNight(false);

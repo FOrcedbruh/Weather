@@ -116,8 +116,12 @@ a {
     outline: none;
     color: #fff;
     font-size: 18px;
+    transition: all .5s ease;
 }
 .search input::placeholder {
     color: #251683;
     font-size: 14px;
+}
+.search input:focus {
+    border: 1px solid #fff;
 }

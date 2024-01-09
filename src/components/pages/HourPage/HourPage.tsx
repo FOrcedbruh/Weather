@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import DataType from "../../../types/DataType";
 import styles from './HourPage.module.css';
@@ -9,7 +9,7 @@ import water from './../../../images/icons/water-drop-svgrepo-com.svg';
 import sun from './../../../images/icons/sun-svgrepo-com.svg';
 import term from './../../../images/icons/health-medical-medicine-termometer-svgrepo-com.svg';
 import press from './../../../images/icons/pressure-svgrepo-com.svg';
-
+import CitiesDataType from "../../../types/CitiesDataType";
 
 
 
@@ -34,9 +34,28 @@ const HourPage: React.FC = () => {
 
     const currentHour = res?.forecast.forecastday[0].hour[numberID];
 
+    const [cities, setCities] = useState<CitiesDataType[]>([]);
+
+    const citiesSrc: string = 'https://countriesnow.space/api/v0.1/countries/population/cities';
 
 
-    console.log(currentHour);
+    useEffect(() => {
+        axios.get(citiesSrc).then(res => {
+        setCities(res.data.data);
+        })
+        
+    }, []);
+
+    const [cityName, setCityName] = useState<string>('');
+
+    const cityNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCityName(e.target.value);
+    }
+
+
+    const filteredCities = cities.filter(city => {
+        return city.city.toLowerCase().includes(cityName.toLowerCase());
+    })
 
     return (
         <main className={styles.window}>
@@ -73,7 +92,14 @@ const HourPage: React.FC = () => {
                 </div>
             </section>
             <section>
-
+                <input type="text" placeholder="Search cities..." value={cityName} onChange={e => cityNameHandler(e)}/>
+                <div className={styles.citiesList}>
+                    {filteredCities.map(city => {
+                        return (
+                            <Link to={`/cityWeather/${city.city}`}><p>{city.city}</p></Link>
+                        )
+                    })}
+                </div>
             </section>
         </main>
     )
