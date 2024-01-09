@@ -17,25 +17,22 @@ const PreviewPage: React.FC = () => {
     const [morning, setMorning] = useState<boolean>(false);
 
     useEffect(() => {
-        if (time < 6 && time > 0) {
-            setNight(true);
+        if (time >= 6 ) {
+            setMorning(true)
+        }
+        if (time >= 12) {
+            setMorning(false);
+            setDay(true);
         }
         if (time >= 20) {
             setNight(true);
-            setDay(false);
-            setDay(false);
-        }
-        if (time >= 12 && time < 20) {
-            setNight(false);
-            setDay(true);
+            setMorning(false);
             setDay(false);
         }
-        if (time >= 7 && time < 12) {
-            setNight(false);
-            setDay(false);
-            setMorning(true);
-        }
+        
     }, []);
+
+    console.log(time)
 
 
     const [city, setCity] = useState<string>('');
@@ -52,12 +49,12 @@ const PreviewPage: React.FC = () => {
 
     return (
         <main className={styles.window}>
-            {night && <img src={nightImage}/>}
-            {day && <img src={dayImage}/>}
-            {morning && <img src={morningImage}/>}
+            {night && <img className={styles.bg} src={nightImage}/>}
+            {day && <img className={styles.bg} src={dayImage}/>}
+            {morning && <img className={styles.bg} src={morningImage}/>}
             <div className={styles.container}>
                 <h1>Enter the city</h1>
-                <input type="text" value={city}  onChange={e => cityHandler(e)}/>
+                <input type="text" value={city}  onChange={e => cityHandler(e)} placeholder='City...'/>
                 {city && <Link onClick={goHandler} to='/home'>Go <img id={styles.arrow} src={arrowImage} /></Link>}
             </div>
         </main>

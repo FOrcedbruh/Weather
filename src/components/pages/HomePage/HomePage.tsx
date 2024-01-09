@@ -54,28 +54,32 @@ const HomePage: React.FC = () => {
             setNight(false);
             setMorning(false);
         }
-        if (currentTime < 6 && currentTime > 0) {
-            setNight(true);
+        if (currentTime >= 6) {
+            setMorning(true);
+        }
+        if (currentTime >= 12) {
+            setMorning(false);
+            setDay(true);
         }
         if (currentTime >= 20) {
+            setDay(false);
             setNight(true);
-            setDay(false);
-            setMorning(false);
-        }
-        if (currentTime >= 7 && currentTime < 12) {
-            setNight(false);
-            setMorning(true);
-            setDay(false);
-        }
-        if (currentTime >= 12 && currentTime < 20) {
-            setDay(true);
-            setNight(false);
-            setMorning(false);
         }
     }, [weather?.current.condition.text])
 
 
-   
+
+
+
+
+    const [blur, setBlur] = useState<boolean>(false);
+    const [blurAura, setBlurAura] = useState<boolean>(false);
+
+    useEffect(() => {
+        setTimeout(() => setBlur(true), 1000);
+        setTimeout(() => setBlurAura(true), 1200);
+    });
+
 
     const Styles: StylesType = {
         night: {
@@ -100,8 +104,15 @@ const HomePage: React.FC = () => {
         }
     }
 
+    const temp_c: number = Number(weather?.current.temp_c);
+
+
+
+    
+
     return (
         <main className={styles.window}>
+            {!blurAura && <div className={`${styles.blurAura} ${blur && styles.nonBlur}`}></div>}
             <div className={styles.search}>
                 <input type="text"  placeholder='Search cities...' value={searchValue} onChange={e => onChangeSearch(e)}/>
                 <Link to={`/cityWeather/${searchValue}`}><img src={glass}/></Link>
@@ -110,12 +121,12 @@ const HomePage: React.FC = () => {
             {day && <img src={Styles.day?.background} className={styles.background}/>}
             {morning && <img src={Styles.morning?.background} className={styles.background}/>}
             {cloudy && <img src={Styles.cloudy?.background} className={styles.background}/>}
-            <h1>{weather?.current.temp_c}°</h1>
+            {temp_c > 0 ? <h1>+{temp_c}°</h1> : <h1>{temp_c}</h1>}
             <h2>{weather?.location.name}</h2>
             <section className={styles.info}>
                 <div className={styles.hourly}>
                     {weather?.forecast.forecastday[0].hour.map((hour, index: number) => {
-                        if (weather.forecast.forecastday[0].hour.indexOf(hour)%4 === 0) {
+                        if (weather.forecast.forecastday[0].hour.indexOf(hour)%2 === 0) {
                             return (
                                 <Link key={hour.time} to={`/hourWeather/${weather.location.name}/${index}`}>
                                     <article   className={styles.hour}>
@@ -124,7 +135,6 @@ const HomePage: React.FC = () => {
                                         <p>{hour.temp_c}°</p>
                                     </article>
                                 </Link>
-                                
                             )
                         }
                         

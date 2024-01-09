@@ -96,7 +96,7 @@ const HourPage: React.FC = () => {
                 <div className={styles.citiesList}>
                     {filteredCities.map(city => {
                         return (
-                            <Link to={`/cityWeather/${city.city}`}><p>{city.city}</p></Link>
+                            <Link key={city.city} to={`/cityWeather/${city.city}`}>{city.city}</Link>
                         )
                     })}
                 </div>

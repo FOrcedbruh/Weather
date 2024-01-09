@@ -52,20 +52,16 @@ const CityWeatherPage: React.FC = () => {
             setNight(false);
             setMorning(false);
         }
-        if (currentTime >= 20 ) {
-            setNight(true);
-            setDay(false);
-            setMorning(false);
-        }
-        if (currentTime >= 7 && currentTime < 12) {
-            setNight(false);
+        if (currentTime >= 6) {
             setMorning(true);
-            setDay(false);
         }
-        if (currentTime >= 12 && currentTime <= 19) {
-            setDay(true);
-            setNight(false);
+        if (currentTime >= 12) {
             setMorning(false);
+            setDay(true);
+        }
+        if (currentTime >= 20) {
+            setDay(false);
+            setNight(true);
         }
     }, [weather?.current.condition.text])
 
@@ -111,7 +107,7 @@ const CityWeatherPage: React.FC = () => {
             <section className={styles.info}>
                 <div className={styles.hourly}>
                     {weather?.forecast.forecastday[0].hour.map((hour, index: number) => {
-                        if (weather.forecast.forecastday[0].hour.indexOf(hour)%4 === 0) {
+                        if (weather.forecast.forecastday[0].hour.indexOf(hour)%2 === 0) {
                             return (
                                 <Link key={hour.time} to={`/hourWeather/${weather.location.name}/${index}`}>
                                     <article   className={styles.hour}>
