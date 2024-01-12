@@ -123,7 +123,18 @@ const CityWeatherPage: React.FC = () => {
                     })}
                 </div>
                 <div className={styles.daily}>
-
+                    {weather?.forecast.forecastday.map((day, index) => {
+                        return (
+                            <Link to='/' key={index}>
+                                <article className={styles.day}>
+                                    <p>{day.date}</p>
+                                    <img src={day.day.condition.icon}/>
+                                    <p>{day.day.condition.text}</p>
+                                    <p>{day.day.avgtemp_c}° | {day.day.avghumidity}</p>
+                                </article>
+                            </Link>
+                        )
+                    })}
                 </div>
             </section>
         </main>

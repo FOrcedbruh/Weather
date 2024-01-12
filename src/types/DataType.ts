@@ -31,10 +31,16 @@ interface HourType {
     pressure_mb?: number,
 }
 
+interface DayType {
+    avgtemp_c: number,
+    avghumidity: number,
+    condition: ConditionType
+}
 
 interface ForecastdayType {
     date: string,
-    hour: HourType[]
+    hour: HourType[],
+    day: DayType
 }
 
 interface ForecastType {

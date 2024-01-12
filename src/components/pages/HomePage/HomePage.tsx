@@ -13,7 +13,6 @@ import glass from './../../../images/icons/magnifying-glass-backup-svgrepo-com.s
 
 
 
-
 const HomePage: React.FC = () => {
 
 
@@ -141,7 +140,18 @@ const HomePage: React.FC = () => {
                     })}
                 </div>
                 <div className={styles.daily}>
-
+                    {weather?.forecast.forecastday.map((day, index) => {
+                        return (
+                            <Link to={`/dayWeather/${weather.location.name}/${index}`} key={index}>
+                                <article className={styles.day}>
+                                    <p>{day.date}</p>
+                                    <img src={day.day.condition.icon}/>
+                                    <p>{day.day.condition.text}</p>
+                                    <p>{day.day.avgtemp_c}° | {day.day.avghumidity}</p>
+                                </article>
+                            </Link>
+                        )
+                    })}
                 </div>
             </section>
         </main>

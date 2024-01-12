@@ -19,6 +19,7 @@ const App: React.FC = () => {
                 <Route path="/Home" element={<HomePage />}/>
                 <Route path="/hourWeather/:city/:id" element={<HourPage />}/>
                 <Route path="/CityWeather/:city" element={<CityWeatherPage />}/>
+                <Route path="/dayWeather/:city/:id" element={<HourPage />}/>
             </Routes>
         </section>
     )
